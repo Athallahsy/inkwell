@@ -56,8 +56,14 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        Category::find($id)->delete();
+        $category = Category::withCount('articles')->findOrFail($id);
 
-        return back()->with('success', 'Categories deleted   successfully');
+        if ($category->articles_count > 0) {
+            return back()->with('error', 'Kategori tidak bisa dihapus karena masih memiliki artikel!');
+        }
+
+        $category->delete();
+
+        return back()->with('success', 'Categories deleted successfully');
     }
 }

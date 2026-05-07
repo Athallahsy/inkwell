@@ -26,7 +26,7 @@
 
                 {{-- alert --}}
                 <div class="swal" data-swal="{{ session('success') }}"></div>
-                
+                <div class="swal-error" data-swal="{{ session('error') }}"></div>
 
           <table class="table table-striped table-bordered text-center">
             <thead>
@@ -78,6 +78,15 @@
             icon: 'success', 'showConfirmButton': false, 'timer': 1500,
             title: 'Success',
             text: swal
+        });
+    }
+
+        const swalError = $('.swal-error').data('swal');
+    if (swalError) {
+        Swal.fire({
+            icon: 'error', 'showConfirmButton': false, 'timer': 2500,
+            title: 'Gagal!',
+            text: swalError
         });
     }
 </script>
