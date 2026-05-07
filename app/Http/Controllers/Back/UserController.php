@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -72,19 +73,26 @@ class UserController extends Controller
         return back()->with('success', 'User updated successfully');
     }
 
-    public function destroy(string $id)
+        public function destroy(string $id)
     {
-        // Hanya admin yang bisa hapus user (sudah dilindungi middleware, tapi double check)
         if (!auth()->user()->isAdmin()) {
             abort(403, 'Akses ditolak.');
         }
 
-        // Admin tidak bisa menghapus dirinya sendiri
         if (auth()->user()->id == $id) {
             return back()->with('error', 'Anda tidak bisa menghapus akun sendiri.');
         }
 
-        User::find($id)->delete();
+        $user = User::findOrFail($id);
+
+        foreach ($user->articles as $article) {
+            if ($article->image && Storage::disk('public')->exists('back/' . $article->image)) {
+                Storage::disk('public')->delete('back/' . $article->image);
+            }
+            $article->delete();
+        }
+
+        $user->delete();
         return back()->with('success', 'User deleted successfully');
     }
 }

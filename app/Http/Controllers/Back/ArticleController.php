@@ -98,7 +98,7 @@ class ArticleController extends Controller
 
         // Tambahkan data tambahan
         $data['user_id'] = auth()->user()->id;
-        $data['slug'] = Str::slug($data['title']);
+        $data['slug'] = Str::slug($data['title']) . '-' . uniqid();
         $data['publish_date'] = now(); // Set publish_date ke tanggal saat ini
 
         // Simpan data artikel ke database
@@ -165,7 +165,7 @@ class ArticleController extends Controller
 
 
         $data['user_id'] = auth()->user()->id;
-        $data['slug'] = Str::slug($data['title']);
+        $data['slug'] = Str::slug($data['title']) . '-' . uniqid();
 
         $article->update($data);
 
