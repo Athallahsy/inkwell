@@ -1,70 +1,83 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="Inkwell Team" />
-        <meta name="robots" content="index, follow">
-        @stack('meta-seo')
-        <title>@yield('title')</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="{{asset('front/image/favicon.ico')}}" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{{asset('front/css/styles.css')}}" rel="stylesheet" />
-        <link href="{{asset('front/css/custom.css')}}" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        @stack('css')
-    </head>
-    <body>
-        <!-- Responsive navbar-->
-        @include('front.layout.navbar')
-        <!-- Page header with logo and tagline-->
-        <header class="py-5 bg-light border-bottom mb-4">
-            <div class="container">
-                <div class="text-center my-5">
-                    <h1 class="fw-bolder">{{$config['title']}}</h1>
-                    <p class="lead mb-0">{{$config['caption']}}</p>
-                </div>
-            </div>
-        </header>
+@extends('front.layout.template')
 
-        @yield('content')
+@push('meta-seo')
+    <meta name="description" content="Inkwell - A personal journal app to express your thoughts, capture memories, and organize ideas effortlessly. Secure, user-friendly, and feature-packed to inspire your creativity. Start your journaling journey today!">
+    <meta name="keyword" content="journal, Personal journal, personal journal app, journal app, personal journaling, Personal Journaling App,inkwell">
+    {{-- meta social --}}
+    <meta property="og:url" content="{{url()->current()}}">
+    <meta property="og:title" content="Inkwell - Personal Journaling App">
+    <meta property="og:site_name" content="Inkwell">
+    <meta property="og:description" content="Inkwell - A personal journal app to express your thoughts, capture memories, and organize ideas effortlessly. Secure, user-friendly, and feature-packed to inspire your creativity. Start your journaling journey today!">
+    <meta property="og:image" content="{{asset('front/image/inkwell-logo.jpg')}}">
+@endpush
 
-        <!-- Footer-->
-        <footer class="py-4 bg-dark text-light">
-            <div class="container">
-                <div class="row align-items-center">
-                    <!-- Logo atau Nama -->
-                    <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
-                        <h5 class="fw-bold">{{$config['site_footer']}}</h5>
-                        <p class="small">Your source of inspiration.</p>
-                    </div>
-                    <!-- Gambar di Tengah -->
-                    <div class="col-md-4 text-center">
-                        <img src="{{ asset('uploads/' . $config['logo']) }}" alt="Inkwell Logo" class="footer-image img-fluid">
-                    </div>
-                    <!-- Hak Cipta -->
-                    <div class="col-md-4 text-center text-md-end">
-                        <p class="small m-0">Copyright &copy; {{ $config['site_copyright'] }} {{ date('Y') }}</p>
-                        <p class="small m-0">
-                            Made with <span class="text-primary">&hearts;</span> {{ $config['site_copyright'] }}
-                        </p>
+@section('title', 'Inkwell')
+
+@section('content')
+     <!-- Page content-->
+     <div class="container">
+        <div class="row">
+            <!-- Blog entries-->
+            <div class="col-lg-8">
+                @if($latest_article)
+                <!-- Featured blog post-->
+                <div class="card mb-4 shadow-sm" data-aos="fade-right" data-aos-duration="1000">
+                    <a href="{{url('post/'.$latest_article->slug)}}">
+                        <img class="card-img-top featured-image" src="{{asset('storage/back/'.$latest_article->image)}}" alt="..." />
+                    </a>
+                    <div class="card-body">
+                        <div class="small text-muted">
+                            {{$latest_article->created_at->format('d F Y')}} |
+                            <a href="{{url('category/'.$latest_article->Category->slug)}}">{{$latest_article->Category->name}}</a> |
+                            By {{$latest_article->User ->name}}  {{-- Menampilkan nama pembuat artikel terbaru --}}
+                        </div>
+                        <h2 class="card-title">{{$latest_article->title}}</h2>
+                        <p class="card-text">{{ Str::limit(strip_tags($latest_article->desc), 500) }}</p>
+                        <a class="btn btn-primary" href="{{url('post/'.$latest_article->slug)}}">Read more →</a>
                     </div>
                 </div>
+                @else
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body text-center py-5">
+                        <h3>Belum ada artikel</h3>
+                        <p class="text-muted">Artikel akan muncul di sini setelah dipublikasikan.</p>
+                    </div>
+                </div>
+                @endif
+
+                <!-- Nested row for non-featured blog posts-->
+                <div class="row">
+                    @forelse ($articles as $article)
+                    <div class="col-lg-6" data-aos="fade-up" data-aos-duration="1000">
+                        <!-- Blog post-->
+                        <div class="card mb-4 shadow-sm">
+                            <a href="{{url('post/'.$article->slug)}}">
+                                <img class="card-img-top featured-image-sm" src="{{asset('storage/back/'.$article->image)}}" alt="..." />
+                            </a>
+                            <div class="card-body card-height">
+                                <div class="small text-muted">
+                                    {{$article->created_at->format('d F Y')}} |
+                                    <a href="{{url('category/'.$article->Category->slug)}}">{{$article->Category->name}}</a> |
+                                    By {{$article->User->name}} {{-- Menampilkan nama pembuat artikel --}}
+                                </div>
+                                <h4 class="card-title">{{$article->title}}</h4>
+                                <p class="card-text">{{ Str::limit(strip_tags($article->desc), 250) }}</p>
+                                <a class="btn btn-primary" href="{{url('post/'.$article->slug)}}">Read more →</a>
+                            </div>
+                        </div>
+                    </div>
+                    @empty
+                    @endforelse
+                </div>
+                <!-- Pagination-->
+                @if($articles->count())
+                <div class="d-flex justify-content-center">
+                    {{ $articles->onEachSide(1)->links() }}
+                </div>
+                @endif
             </div>
-        </footer>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="{{asset('front/js/scripts.js')}}"></script>
-        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-        <script>
-            AOS.init();
-          </script>
-        @stack('js')
-    </body>
-</html>
+            <!-- Side widgets-->
+            @include('front.layout.side-widget')
+        </div>
+    </div>
+@endsection
