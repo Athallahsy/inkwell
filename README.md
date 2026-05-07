@@ -157,5 +157,5 @@ app/
 
 Made with ❤️ by **[AThallahsy]**
 
-[![GitHub](https://img.shields.io/badge/GitHub-your--username-181717?style=flat&logo=github)](https://github.com/Athallahsy)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-your--name-0A66C2?style=flat&logo=linkedin)](https://linkedin.com/in/athallahsy)
+[![GitHub](https://img.shields.io/badge/GitHub-Athallahsy-181717?style=flat&logo=github)](https://github.com/Athallahsy)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Athallahsy-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/athallahsy)
