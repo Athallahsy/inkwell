@@ -86,7 +86,7 @@ php artisan key:generate
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=db_blog
+DB_DATABASE=blog
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -155,7 +155,7 @@ app/
 
 ## 🙋 Author
 
-Made with ❤️ by **[Your Name]**
+Made with ❤️ by **[AThallahsy]**
 
-[![GitHub](https://img.shields.io/badge/GitHub-your--username-181717?style=flat&logo=github)](https://github.com/your-username)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-your--name-0A66C2?style=flat&logo=linkedin)](https://linkedin.com/in/your-name)
+[![GitHub](https://img.shields.io/badge/GitHub-your--username-181717?style=flat&logo=github)](https://github.com/Athallahsy)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-your--name-0A66C2?style=flat&logo=linkedin)](https://linkedin.com/in/athallahsy)
