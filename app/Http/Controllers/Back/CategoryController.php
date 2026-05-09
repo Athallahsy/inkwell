@@ -48,7 +48,7 @@ class CategoryController extends Controller
 
         Category::find($id)->update($data);
 
-        return back()->with('success', 'Categories updated   successfully');
+        return back()->with('success', 'Categories updated successfully');
     }
 
     /**

@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Back;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Config;
-use Intervention\Image\Facades\Image;
-
 
 class ConfigController extends Controller
 {
@@ -16,22 +14,21 @@ class ConfigController extends Controller
             'config' => Config::paginate(6),
         ]);
     }
+
     public function update(Request $request, $id)
     {
-        // Validasi input
         $data = $request->validate([
             'name' => 'required|min:3',
             'value' => 'nullable|min:3',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi untuk logo
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $config = Config::findOrFail($id);
 
-        // Proses file jika ada
         if ($request->hasFile('logo')) {
             // Hapus logo lama jika ada
-            if ($config->logo) {
-                $oldLogoPath = public_path('uploads/' . $config->logo);
+            if ($config->value) {
+                $oldLogoPath = public_path('uploads/' . $config->value);
                 if (file_exists($oldLogoPath)) {
                     unlink($oldLogoPath);
                 }
@@ -42,8 +39,7 @@ class ConfigController extends Controller
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('uploads'), $filename);
 
-            // Simpan nama file ke database
-            $config->value = $filename; // Menggunakan kolom `value` untuk menyimpan logo
+            $config->value = $filename;
         } else {
             $config->value = $request->value;
         }
@@ -51,6 +47,5 @@ class ConfigController extends Controller
         $config->save();
 
         return back()->with('success', 'Settings updated successfully');
-}
-
+    }
 }
