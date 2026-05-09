@@ -3,72 +3,71 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name', 'Inkwell') }} — @yield('title')</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('front/image/favicon.ico') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --ink-bg: #f8f7f4;
+            --ink-surface: #ffffff;
+            --ink-border: #e9e7e1;
+            --ink-text: #1c1917;
+            --ink-muted: #78716c;
+            --ink-accent: #c2410c;
+            --ink-accent-hover: #9a330a;
+            --ink-soft: #f0ede7;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--ink-bg);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+        /* Navbar */
+        .auth-navbar {
+            background: #1c1917;
+            border-bottom: 1px solid #2c2520;
+            padding: 0 24px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .auth-navbar-brand {
+            font-family: Georgia, serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #f8f7f4;
+            text-decoration: none;
+            letter-spacing: .02em;
+        }
+        .auth-navbar-link {
+            font-size: .82rem;
+            color: #a8a29e;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color .2s;
+        }
+        .auth-navbar-link:hover { color: #f8f7f4; }
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.5.0/mdb.min.css" rel="stylesheet">
-
-
-    <link rel="stylesheet" href="{{asset('front/css/custom.css')}}">
-
-    <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+        /* Main */
+        main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 16px; }
+    </style>
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <nav class="auth-navbar">
+        <a href="{{ url('/') }}" class="auth-navbar-brand">inkwell</a>
+        <a href="{{ url('/') }}" class="auth-navbar-link">← Back to Home</a>
+    </nav>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-                        <!-- Tambahkan item menu lain di sini jika diperlukan -->
-                    </ul>
+    <main>
+        @yield('content')
+    </main>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Hapus Authentication Links -->
-                        @auth
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endauth
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
-    </div>
-
-    <script src="{{asset('front/js/scripts.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

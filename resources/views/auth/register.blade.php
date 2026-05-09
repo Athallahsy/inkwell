@@ -1,90 +1,81 @@
 @extends('layouts.app')
 
-@section('content')
-<section class="forms-section">
-    <h1 class="section-title">Animated Forms</h1>
-    <div class="forms">
-        <!-- Login Form -->
-        <div class="form-wrapper">
-            <button type="button" class="switcher switcher-login">
-                Login
-                <span class="underline"></span>
-            </button>
-            <form class="form form-login" method="POST" action="{{ route('login') }}">
-                @csrf
-                <fieldset>
-                    <legend>Please, enter your email and password for login.</legend>
-                    <div class="input-block">
-                        <label for="login-email">E-mail</label>
-                        <input id="login-email" type="email" name="email" required>
-                    </div>
-                    <div class="input-block">
-                        <label for="login-password">Password</label>
-                        <input id="login-password" type="password" name="password" required>
-                    </div>
-                    <div class="input">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="remember">
-                                {{ __('Remember Me') }}
-                            </label>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn-login">Login</button>
-                    @if (Route::has('password.request'))
-                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                        {{ __('Forgot Your Password?') }}
-                    </a>
-                    @endif
-                </fieldset>
-            </form>
-        </div>
+@section('title', 'Register')
 
-        <!-- Sign Up Form -->
-        <div class="form-wrapper  is-active">
-            <button type="button" class="switcher switcher-signup">
-                Sign Up
-                <span class="underline"></span>
-            </button>
-            <form class="form form-signup" method="POST" action="{{ route('register') }}">
-                @csrf
-                <fieldset>
-                    <legend>Please, enter your email, password and password confirmation for sign up.</legend>
-                    <div class="input-block">
-                        <label for="signup-name">Name</label>
-                        <input id="signup-name" type="text" class="@error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-                        @error('name')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    <div class="input-block">
-                        <label for="signup-email">E-mail</label>
-                        <input id="signup-email" type="email" class="@error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    <div class="input-block">
-                        <label for="signup-password">Password</label>
-                        <input id="signup-password" type="password" class="@error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                        @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    <div class="input-block">
-                        <label for="signup-password-confirm">Confirm password</label>
-                        <input id="signup-password-confirm" type="password" name="password_confirmation" required autocomplete="new-password">
-                    </div>
-                </fieldset>
-                <button type="submit" class="btn-signup">Continue</button>
-            </form>
-        </div>
+@section('content')
+<div style="width:100%; max-width:420px;">
+
+    {{-- Header --}}
+    <div style="text-align:center; margin-bottom:32px;">
+        <span style="display:block; font-size:.68rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:#c2410c; margin-bottom:8px;">Inkwell · Journal</span>
+        <h1 style="font-family:Georgia,serif; font-size:1.8rem; font-weight:700; color:#1c1917; margin:0 0 8px;">Create account</h1>
+        <p style="font-size:.88rem; color:#78716c; margin:0;">Join Inkwell and start writing</p>
     </div>
-</section>
+
+    {{-- Error --}}
+    @if($errors->any())
+    <div style="background:#fff4ef; border:1px solid #fca99a; border-radius:8px; padding:12px 16px; margin-bottom:20px;">
+        @foreach($errors->all() as $error)
+        <p style="font-size:.83rem; color:#c2410c; margin:0;">{{ $error }}</p>
+        @endforeach
+    </div>
+    @endif
+
+    {{-- Card --}}
+    <div style="background:#fff; border:1px solid #e9e7e1; border-radius:12px; padding:32px;">
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+
+            {{-- Name --}}
+            <div style="margin-bottom:20px;">
+                <label style="display:block; font-size:.75rem; font-weight:600; color:#78716c; text-transform:uppercase; letter-spacing:.08em; margin-bottom:8px;">Full Name</label>
+                <input type="text" name="name" value="{{ old('name') }}" required autofocus
+                       style="width:100%; padding:10px 14px; border:1px solid {{ $errors->has('name') ? '#fca99a' : '#e9e7e1' }}; border-radius:8px; font-size:.9rem; color:#1c1917; background:#f8f7f4; outline:none; transition:border-color .2s;"
+                       onfocus="this.style.borderColor='#c2410c'" onblur="this.style.borderColor='#e9e7e1'"
+                       placeholder="Your name">
+            </div>
+
+            {{-- Email --}}
+            <div style="margin-bottom:20px;">
+                <label style="display:block; font-size:.75rem; font-weight:600; color:#78716c; text-transform:uppercase; letter-spacing:.08em; margin-bottom:8px;">Email</label>
+                <input type="email" name="email" value="{{ old('email') }}" required
+                       style="width:100%; padding:10px 14px; border:1px solid {{ $errors->has('email') ? '#fca99a' : '#e9e7e1' }}; border-radius:8px; font-size:.9rem; color:#1c1917; background:#f8f7f4; outline:none; transition:border-color .2s;"
+                       onfocus="this.style.borderColor='#c2410c'" onblur="this.style.borderColor='#e9e7e1'"
+                       placeholder="you@example.com">
+            </div>
+
+            {{-- Password --}}
+            <div style="margin-bottom:20px;">
+                <label style="display:block; font-size:.75rem; font-weight:600; color:#78716c; text-transform:uppercase; letter-spacing:.08em; margin-bottom:8px;">Password</label>
+                <input type="password" name="password" required
+                       style="width:100%; padding:10px 14px; border:1px solid {{ $errors->has('password') ? '#fca99a' : '#e9e7e1' }}; border-radius:8px; font-size:.9rem; color:#1c1917; background:#f8f7f4; outline:none; transition:border-color .2s;"
+                       onfocus="this.style.borderColor='#c2410c'" onblur="this.style.borderColor='#e9e7e1'"
+                       placeholder="Min. 8 characters">
+            </div>
+
+            {{-- Confirm Password --}}
+            <div style="margin-bottom:24px;">
+                <label style="display:block; font-size:.75rem; font-weight:600; color:#78716c; text-transform:uppercase; letter-spacing:.08em; margin-bottom:8px;">Confirm Password</label>
+                <input type="password" name="password_confirmation" required
+                       style="width:100%; padding:10px 14px; border:1px solid #e9e7e1; border-radius:8px; font-size:.9rem; color:#1c1917; background:#f8f7f4; outline:none; transition:border-color .2s;"
+                       onfocus="this.style.borderColor='#c2410c'" onblur="this.style.borderColor='#e9e7e1'"
+                       placeholder="••••••••">
+            </div>
+
+            {{-- Submit --}}
+            <button type="submit"
+                    style="width:100%; padding:11px; background:#c2410c; color:#fff; border:none; border-radius:8px; font-size:.9rem; font-weight:600; cursor:pointer; transition:background .2s;"
+                    onmouseover="this.style.background='#9a330a'" onmouseout="this.style.background='#c2410c'">
+                Create Account
+            </button>
+        </form>
+    </div>
+
+    {{-- Login link --}}
+    <p style="text-align:center; margin-top:20px; font-size:.83rem; color:#78716c;">
+        Already have an account?
+        <a href="{{ route('login') }}" style="color:#c2410c; font-weight:600; text-decoration:none;">Login</a>
+    </p>
+
+</div>
 @endsection
